@@ -4,30 +4,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#123b35">
-  <meta name="description" content="ECO-HEALTH 360° — موقع عربي توعوي صحي وبيئي يركز على الوعي البيئي والاستفادة من الذكاء الاصطناعي في دعم المجتمع.">
-  <meta name="keywords" content="ECO-HEALTH, صحة, بيئة, توعية, AI, ذكاء اصطناعي, مياه آمنة, أمان بيئي">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="ECO-HEALTH 360° | وعي ينقذ حياة">
-  <meta property="og:description" content="موقع عربي للتوعية الصحية والبيئية، مع أداة ذكية للمساعدة المجتمعية والوقاية.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/na6883107-stack/ecohealth360.github.io/main/favicon.svg">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <title>ECO-HEALTH 360° | وعي ينقذ حياة</title>
+  <meta name="description" content="ECO-HEALTH 360° — موقع عربي توعوي صحي وبيئي مع مساعد ذكي يلتزم بإرشادات منظمة الصحة العالمية ووزارة الصحة المصرية.">
+  <meta name="keywords" content="ECO-HEALTH, صحة, بيئة, توعية, WHO, وزارة الصحة المصرية, AI, ذكاء اصطناعي">
+  <title>ECO-HEALTH 360° | مساعد صحي وبيئي</title>
   <style>
     :root {
+      --bg: #f5f7f1;
+      --panel: #ffffff;
       --green-900: #103b34;
       --green-800: #123d38;
       --green-700: #176b55;
       --green-600: #1c7d66;
       --green-100: #dff3e9;
       --green-50: #edf8f2;
-      --cream: #f7f8f2;
-      --white: #ffffff;
-      --text: #1b2f2b;
-      --muted: #5f6f6a;
+      --text: #1d2d2b;
+      --muted: #5c6f6d;
       --line: #dfe9e4;
-      --orange: #e89d52;
-      --red: #b8634e;
+      --warning: #fff3df;
+      --warning-border: #edd3a9;
+      --danger: #b85d4c;
       --shadow: 0 18px 45px rgba(17, 58, 49, 0.10);
     }
     * { box-sizing: border-box; }
@@ -35,434 +30,357 @@
     body {
       margin: 0;
       font-family: Tahoma, Arial, sans-serif;
+      background: var(--bg);
       color: var(--text);
-      background: var(--cream);
       line-height: 1.75;
     }
     a { color: inherit; }
-    img { max-width: 100%; }
+    img { max-width: 100%; display: block; }
     button, input, textarea, select { font: inherit; }
-    button { cursor: pointer; }
-    .wrap { width: min(1120px, 92%); margin: 0 auto; }
+    .container { width: min(1100px, 92%); margin: 0 auto; }
     .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(247, 248, 242, 0.94);
-      backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 30;
+      background: rgba(245, 247, 241, 0.94); backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
     }
     .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
+      display: flex; align-items: center; justify-content: space-between; gap: 18px;
       padding: 12px 0;
     }
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      font-weight: 900;
-    }
-    .brandmark {
-      width: 42px; height: 42px; border-radius: 14px;
-      display: grid; place-items: center;
-      background: linear-gradient(140deg, var(--green-700), var(--green-900));
-      color: white; font-size: 22px; box-shadow: var(--shadow);
+    .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-mark {
+      width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center;
+      background: linear-gradient(140deg, var(--green-700), var(--green-900)); color: white; font-size: 22px;
+      box-shadow: var(--shadow);
     }
     .brand-text { display: grid; line-height: 1.2; }
-    .brand-text small {
-      display: block; color: var(--muted); font-size: 10px;
-      letter-spacing: 1px; direction: ltr; text-align: right;
-    }
-    .navlinks {
-      display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
-    }
-    .navlinks a {
-      color: var(--muted); text-decoration: none; font-size: 13px; transition: 0.2s;
-    }
-    .navlinks a:hover { color: var(--green-700); }
+    .brand-text strong { font-size: 18px; }
+    .brand-text small { color: var(--muted); font-size: 10px; letter-spacing: 1px; }
+    .nav-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: 13px; }
+    .nav-links a:hover { color: var(--green-700); }
     .btn {
-      border: none; border-radius: 14px;
-      padding: 11px 18px; background: var(--green-700); color: white;
-      text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
-      font-weight: 700; gap: 8px; transition: 0.2s;
-      box-shadow: 0 10px 22px rgba(23, 107, 85, 0.18);
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: none; border-radius: 14px; background: var(--green-700); color: white;
+      padding: 11px 18px; text-decoration: none; font-weight: 700; box-shadow: 0 10px 22px rgba(23, 107, 85, 0.18);
+      cursor: pointer;
     }
-    .btn:hover { transform: translateY(-1px); }
     .btn.secondary {
-      background: white; color: var(--green-700); border: 1px solid var(--line);
-      box-shadow: none;
-    }
-    .lang-toggle {
-      border: 1px solid var(--line); border-radius: 12px; background: white; color: var(--green-800);
-      padding: 6px 10px; font-weight: 700; font-size: 12px;
+      background: white; color: var(--green-700); border: 1px solid var(--line); box-shadow: none;
     }
     .hero {
-      padding: 72px 0 58px;
-      background:
-        radial-gradient(circle at 12% 10%, #e5f4da 0%, transparent 24%),
-        linear-gradient(135deg, #edf7ef 0%, #f9f9f5 58%, #e7f3ec 100%);
-      overflow: hidden;
+      padding: 72px 0 58px; background: linear-gradient(135deg, #edf7ef 0%, #f9f9f5 58%, #e7f3ec 100%);
     }
     .hero-grid {
-      display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 34px; align-items: center;
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 34px; align-items: center;
     }
     .eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: #e1f1e5; color: var(--green-700); font-size: 13px; font-weight: 800;
-      padding: 7px 14px; border-radius: 999px; border: 1px solid #d8ebde;
+      display: inline-flex; align-items: center; gap: 8px; background: #e1f1e5; color: var(--green-700);
+      border: 1px solid #d8ebde; border-radius: 999px; padding: 7px 14px; font-weight: 800; font-size: 13px;
     }
     h1 {
-      font-size: clamp(38px, 6vw, 68px);
-      line-height: 1.15; letter-spacing: -2px; margin: 18px 0 12px;
+      font-size: clamp(36px, 6vw, 64px); line-height: 1.15; margin: 18px 0 12px; letter-spacing: -2px;
     }
     h1 .accent { color: var(--green-700); }
-    .hero p {
-      color: var(--muted); font-size: 18px; margin: 0; max-width: 620px;
-    }
-    .hero-actions {
-      display: flex; gap: 12px; flex-wrap: wrap; margin-top: 25px;
-    }
-    .stats {
-      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 32px;
-    }
+    .lead { font-size: 18px; color: var(--muted); max-width: 620px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin-top: 30px; }
     .stat {
-      background: rgba(255,255,255,0.72); border: 1px solid var(--line);
-      border-radius: 16px; padding: 12px;
+      background: rgba(255,255,255,0.8); border: 1px solid var(--line); border-radius: 16px; padding: 12px;
     }
     .stat b { display: block; color: var(--green-700); font-size: 20px; }
     .stat span { font-size: 12px; color: var(--muted); }
     .hero-art {
-      position: relative; min-height: 320px; border-radius: 32px; background: linear-gradient(145deg, #1d6c57, #0f3b36);
-      display: grid; place-items: center; box-shadow: var(--shadow); overflow: hidden; color: white;
+      position: relative; min-height: 320px; background: linear-gradient(145deg, #1d6c57, #0f3b36);
+      display: grid; place-items: center; color: white; border-radius: 32px; box-shadow: var(--shadow); overflow: hidden;
     }
-    .orbit, .orbit::before, .orbit::after {
-      position: absolute; border: 1px solid rgba(255,255,255,.25); border-radius: 50%;
-    }
+    .orbit, .orbit::before, .orbit::after { position: absolute; border: 1px solid rgba(255,255,255,.25); border-radius: 50%; }
     .orbit { width: 270px; height: 270px; }
-    .orbit::before, .orbit::after { content: ""; inset: 28px; }
-    .orbit::after { inset: 60px; }
-    .earth { font-size: 112px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.25)); }
-    .float {
-      position: absolute; background: rgba(255,255,255,0.95); color: var(--text); border-radius: 14px;
-      padding: 9px 13px; box-shadow: var(--shadow); font-size: 12px; font-weight: 800;
+    .orbit::before { content: ''; inset: 28px; }
+    .orbit::after { content: ''; inset: 60px; }
+    .earth { font-size: 112px; filter: drop-shadow(0 10px 20px rgba(0,0,0,.25)); }
+    .badge {
+      position: absolute; background: rgba(255,255,255,.95); color: var(--text); border-radius: 14px;
+      padding: 8px 12px; box-shadow: var(--shadow); font-size: 12px; font-weight: 800;
     }
-    .float.f1 { top: 36px; right: 24px; }
-    .float.f2 { bottom: 44px; left: 22px; }
-    .float.f3 { bottom: 27px; right: 34px; }
+    .badge.one { top: 40px; right: 26px; }
+    .badge.two { bottom: 42px; left: 24px; }
+    .badge.three { bottom: 26px; right: 34px; }
 
     section { padding: 66px 0; }
-    .section-head { max-width: 720px; margin-bottom: 28px; }
-    .kicker {
-      letter-spacing: 1px; color: var(--green-700); font-size: 12px; font-weight: 900;
-    }
-    h2 {
-      font-size: clamp(28px, 4vw, 40px); line-height: 1.3; margin: 6px 0 10px;
-    }
+    .section-head { margin-bottom: 28px; max-width: 700px; }
+    .kicker { letter-spacing: 1px; color: var(--green-700); font-size: 12px; font-weight: 900; }
+    h2 { font-size: clamp(28px, 4vw, 40px); line-height: 1.3; margin: 6px 0 10px; }
     .section-head p { margin: 0; color: var(--muted); }
-    .cards {
-      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 17px;
-    }
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; }
     .card {
-      background: white; border: 1px solid var(--line); border-radius: 22px; padding: 22px;
-      box-shadow: 0 8px 25px rgba(20, 60, 48, 0.04); transition: 0.2s; position: relative; overflow: hidden;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 22px; padding: 22px;
+      position: relative; overflow: hidden; box-shadow: 0 8px 25px rgba(20, 60, 48, 0.04);
     }
-    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
     .card::before {
-      content: ""; position: absolute; inset: 0 auto auto 0; width: 100%; height: 3px;
+      content: ''; position: absolute; inset: 0 auto auto 0; height: 3px; width: 100%;
       background: linear-gradient(90deg, #dff3e9, #176b55, #75c7a6);
-      opacity: 0.95;
     }
-    .ico {
+    .card .icon {
       width: 48px; height: 48px; border-radius: 15px; display: grid; place-items: center;
-      background: var(--green-100); font-size: 24px; margin-bottom: 14px;
+      background: var(--green-100); font-size: 24px; margin-bottom: 12px;
     }
-    .card h3 { margin: 0 0 7px; font-size: 19px; }
-    .card p { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
+    .card h3 { margin: 0 0 7px; }
+    .card p { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
     .tag {
-      display: inline-block; background: #f0f5ed; color: var(--green-700); border-radius: 999px;
-      font-size: 11px; font-weight: 700; padding: 4px 9px; 
+      display: inline-block; border-radius: 999px; background: #f0f5ed; color: var(--green-700);
+      font-size: 11px; font-weight: 700; padding: 4px 9px;
     }
-
     .feature { background: #edf4eb; }
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: start; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
     .panel {
       background: white; border: 1px solid var(--line); border-radius: 22px; padding: 24px;
       box-shadow: 0 12px 25px rgba(16, 59, 52, 0.03);
     }
-    .myth-grid { display: grid; gap: 12px; }
-    .myth-item {
-      border: 1px solid var(--line); border-radius: 16px; padding: 14px; background: #fcfdfb;
-    }
-    .myth-item b { display: block; margin-bottom: 3px; }
-    .bad { color: var(--red); }
-    .good { color: var(--green-700); }
-    .small { font-size: 12px; color: var(--muted); }
-    .quick-btns { display: flex; gap: 7px; flex-wrap: wrap; }
-    .quick-btns button {
-      border: 1px solid var(--line); background: white; color: var(--green-700); padding: 7px 10px;
-      border-radius: 999px; font-size: 12px; font-weight: 700;
+    .myths { display: grid; gap: 12px; }
+    .myth { border: 1px solid var(--line); border-radius: 16px; padding: 14px; background: #fcfdfb; }
+    .myth strong { display: block; margin-bottom: 5px; }
+    .text-red { color: var(--danger); }
+    .text-green { color: var(--green-700); }
+    .quick-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+    .quick-buttons button {
+      border: 1px solid var(--line); background: white; color: var(--green-700); border-radius: 999px;
+      padding: 7px 10px; font-size: 12px; font-weight: 700; cursor: pointer;
     }
     .notice {
-      background: #fff5e8; border: 1px solid #f1d8b5; color: #70491f; border-radius: 14px;
-      padding: 13px; font-size: 13px; margin: 14px 0;
+      background: var(--warning); border: 1px solid var(--warning-border); color: #6d4914; border-radius: 14px;
+      padding: 14px; margin-top: 14px; font-size: 13px;
     }
-    .steps { display: grid; gap: 13px; counter-reset: s; }
-    .step { display: flex; gap: 13px; align-items: flex-start; }
+    .steps { display: grid; gap: 16px; counter-reset: s; }
+    .step { display: flex; gap: 12px; align-items: flex-start; }
     .step::before {
-      content: counter(s); counter-increment: s; flex: 0 0 34px; width: 34px; height: 34px; border-radius: 11px;
-      background: var(--green-700); color: white; display: grid; place-items: center; font-weight: 900;
+      content: counter(s); counter-increment: s; width: 34px; height: 34px; flex: 0 0 34px;
+      display: grid; place-items: center; border-radius: 11px; background: var(--green-700); color: white; font-weight: 900;
     }
-    .step p { margin: 0; color: var(--muted); font-size: 14px; }
-    .step b { display: block; color: var(--text); }
-    .formgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .field { display: grid; gap: 6px; }
-    .field.full { grid-column: 1 / -1; }
-    .field label { font-weight: 800; font-size: 13px; }
-    .field input, .field select, .field textarea {
-      width: 100%; border: 1px solid var(--line); border-radius: 12px; padding: 11px; background:#fbfcf9; color: var(--text);
-    }
-    .field textarea { min-height: 100px; resize: vertical; }
-    .success {
-      display: none; margin-top: 14px; padding: 13px; border-radius: 12px; background: #e4f5e9; color: #17563f; border: 1px solid #cfead8;
-    }
+    .step p { margin: 0; color: var(--muted); }
+    .step strong { display: block; color: var(--text); }
     .assistant-wrap { display: flex; flex-direction: column; gap: 12px; }
     .chatlog {
-      min-height: 220px; max-height: 330px; overflow: auto; background: #f6f8f3; border-radius: 15px; padding: 13px; border: 1px solid var(--line);
+      min-height: 240px; max-height: 320px; overflow: auto; background: #f6f8f3; border: 1px solid var(--line);
+      border-radius: 15px; padding: 13px;
     }
     .bubble {
-      max-width: 90%; padding: 10px 13px; border-radius: 14px; margin: 7px 0; font-size: 14px; white-space: pre-wrap; line-height: 1.7;
+      max-width: 92%; padding: 11px 13px; border-radius: 14px; margin: 8px 0; line-height: 1.7; white-space: pre-wrap;
+      font-size: 14px;
     }
     .bubble.bot { background: white; border: 1px solid var(--line); margin-right: auto; }
     .bubble.user { background: #dff1e5; margin-left: auto; }
     .chat-row { display: flex; gap: 8px; }
-    .chat-row input {
-      flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 12px; padding: 10px; background: white;
+    .chat-row input { flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 12px; padding: 10px; background: white; }
+    .settings {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px;
     }
-    .api-key-box {
-      display: flex; gap: 8px; margin-top: 10px; align-items: center; flex-wrap: wrap;
+    .field { display: grid; gap: 6px; }
+    .field label { font-size: 12px; font-weight: 800; }
+    .field input {
+      width: 100%; border: 1px solid var(--line); border-radius: 12px; padding: 9px 10px; background: #fff;
     }
-    .api-key-box input {
-      flex: 1; min-width: 180px; border: 1px solid var(--line); border-radius: 12px; padding: 9px 10px; background: #fff;
-    }
-    .resources { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .resources { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
     .resource {
-      background: white; border: 1px solid var(--line); border-radius: 16px; padding: 17px; text-decoration: none; display: block; transition: 0.2s;
+      background: white; border: 1px solid var(--line); border-radius: 16px; padding: 17px; text-decoration: none;
+      display: block; transition: 0.2s;
     }
     .resource:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-    .resource b { display: block; }
-    .resource span { font-size: 12px; color: var(--muted); }
-    .disclaimer {
-      border-top: 1px solid var(--line); padding-top: 15px; margin-top: 25px; font-size: 12px; color: var(--muted);
-    }
-    footer {
-      background: var(--green-900); color: white; padding: 35px 0;
-    }
-    .foot {
-      display: flex; justify-content: space-between; align-items: center; gap: 25px;
-    }
-    .foot p { margin: 0; color: #d7e9df; }
+    .resource strong { display: block; }
+    .resource span { color: var(--muted); font-size: 12px; }
+    .disclaimer { border-top: 1px solid var(--line); padding-top: 15px; margin-top: 26px; font-size: 12px; color: var(--muted); }
+    footer { background: var(--green-900); color: white; padding: 32px 0; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
     .mini-brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 900; }
-    .mini-brand .brandmark {
+    .mini-brand .brand-mark {
       width: 34px; height: 34px; font-size: 18px; border-radius: 12px;
     }
-    .muted { color: var(--muted); }
-
     @media (max-width: 820px) {
-      .navlinks { display: none; }
+      .nav-links { display: none; }
       .hero-grid, .two-col { grid-template-columns: 1fr; }
-      .cards, .resources { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .hero { padding-top: 50px; }
-      .hero-art { min-height: 260px; }
+      .cards, .resources { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .stats { grid-template-columns: repeat(3, minmax(0,1fr)); }
     }
     @media (max-width: 560px) {
-      .cards, .resources, .formgrid, .stats { grid-template-columns: 1fr; }
-      .foot { display: block; }
-      .hero-actions { flex-direction: column; align-items: stretch; }
-      .btn, .lang-toggle { width: 100%; }
-      .api-key-box, .chat-row { flex-direction: column; }
+      .cards, .resources, .settings, .stats { grid-template-columns: 1fr; }
+      .hero-actions, .chat-row { flex-direction: column; }
+      .btn { width: 100%; }
+      .footer-inner { display: block; }
       section { padding: 48px 0; }
     }
   </style>
 </head>
 <body>
   <header class="topbar">
-    <div class="wrap nav">
+    <div class="container nav">
       <a class="brand" href="#home">
-        <span class="brandmark">🌿</span>
+        <span class="brand-mark">🌿</span>
         <span class="brand-text">
-          <span data-i18n="brand">ECO-HEALTH 360°</span>
+          <strong>ECO-HEALTH 360°</strong>
           <small>SMART COMMUNITY • HEALTHY FUTURE</small>
         </span>
       </a>
-      <nav class="navlinks">
-        <a href="#axes" data-i18n="navAxes">محاور التوعية</a>
-        <a href="#myths" data-i18n="navMyths">صح ولا غلط؟</a>
-        <a href="#report" data-i18n="navReport">بلّغ عن مشكلة</a>
-        <a href="#assistant" data-i18n="navAssistant">اسأل المساعد</a>
-        <a href="#resources" data-i18n="navResources">مصادر موثوقة</a>
+      <nav class="nav-links">
+        <a href="#axes">محاور التوعية</a>
+        <a href="#myths">صح ولا غلط؟</a>
+        <a href="#report">بلّغ عن مشكلة</a>
+        <a href="#assistant">اسأل المساعد</a>
+        <a href="#resources">مصادر موثوقة</a>
       </nav>
-      <div style="display:flex; gap:10px; align-items:center;">
-        <button class="lang-toggle" id="langToggle" type="button" aria-label="Toggle language">EN</button>
-        <a class="btn" href="#axes" data-i18n="navCTA">ابدأ التوعية</a>
-      </div>
+      <a class="btn" href="#axes">ابدأ التوعية</a>
     </div>
   </header>
 
   <main id="home">
     <section class="hero">
-      <div class="wrap hero-grid">
+      <div class="container hero-grid">
         <div>
-          <span class="eyebrow" data-i18n="eyebrow">🌱 مبادرة مجتمعية • صحة وبيئة ووعي</span>
-          <h1 data-i18n="heroTitle">وعي ينقذ حياة،<br><span class="accent">وبيئة تحمي مستقبلنا.</span></h1>
-          <p data-i18n="heroText">من المعلومة الطبية الموثوقة إلى السلوك الوقائي. مساحة بسيطة تساعدك تفهم صحتك، تميّز المعلومة الصحيحة، وتتعرف على طرق حماية بيئتك ومجتمعك.</p>
+          <span class="eyebrow">🌱 مبادرة مجتمعية • صحة وبيئة ووعي</span>
+          <h1>وعي ينقذ حياة،<br><span class="accent">وبيئة تحمي مستقبلنا.</span></h1>
+          <p class="lead">من المعلومة الطبية الموثوقة إلى السلوك الوقائي. هذا الموقع يشرح لك كيف تحمي صحتك وبيئتك، وكيف تتعامل مع الأسئلة الصحية بطريقة آمنة وتستشير المختص عند الحاجة.</p>
           <div class="hero-actions">
-            <a class="btn" href="#axes" data-i18n="heroBtn1">اكتشف محاورنا ←</a>
-            <a class="btn secondary" href="#report" data-i18n="heroBtn2">أبلغ عن مشكلة بيئية</a>
+            <a class="btn" href="#axes">اكتشف محاورنا ←</a>
+            <a class="btn secondary" href="#report">أبلغ عن مشكلة بيئية</a>
           </div>
           <div class="stats">
-            <div class="stat"><b data-i18n="stat1b">6 محاور</b><span data-i18n="stat1s">لصحة أفضل</span></div>
-            <div class="stat"><b data-i18n="stat2b">ببساطة</b><span data-i18n="stat2s">معلومة مفهومة</span></div>
-            <div class="stat"><b data-i18n="stat3b">معًا</b><span data-i18n="stat3s">نشارك ونحمي</span></div>
+            <div class="stat"><b>6 محاور</b><span>لصحة أفضل</span></div>
+            <div class="stat"><b>ببساطة</b><span>معلومة واضحة</span></div>
+            <div class="stat"><b>معًا</b><span>نشارك ونحمي</span></div>
           </div>
         </div>
 
-        <div class="hero-art" aria-label="Illustration showing health and environment">
+        <div class="hero-art" aria-label="رسم توضيحي عن الصحة والبيئة">
           <div class="orbit"></div>
           <div class="earth">🌍</div>
-          <div class="float f1">💧 مياه آمنة</div>
-          <div class="float f2">🩺 وعي صحي</div>
-          <div class="float f3">♻️ بيئة أنظف</div>
+          <div class="badge one">💧 مياه آمنة</div>
+          <div class="badge two">🩺 وعي صحي</div>
+          <div class="badge three">♻️ بيئة أنظف</div>
         </div>
       </div>
     </section>
 
     <section id="axes">
-      <div class="wrap">
+      <div class="container">
         <div class="section-head">
-          <span class="kicker" data-i18n="pillarsKicker">OUR SIX PILLARS</span>
-          <h2 data-i18n="pillarsTitle">ستة محاور… لقرار صحي أذكى</h2>
-          <p data-i18n="pillarsText">اختاري الموضوع اللي يهمك، اقرئي الرسالة الأساسية، وشاركيها مع أسرتك ومجتمعك.</p>
+          <span class="kicker">SIX PILLARS</span>
+          <h2>ستة محاور… لقرار صحي أذكى</h2>
+          <p>اختاري الموضوع اللي يهمك، اقرئي الرسالة الأساسية، وشارك المعلومات مع أصدقائك وعائلتك.</p>
         </div>
 
         <div class="cards">
           <article class="card">
-            <div class="ico">🩺</div>
-            <h3 data-i18n="card1Title">1. اعرف مرضك</h3>
-            <p data-i18n="card1Text">افهم الأعراض الشائعة، علامات الخطر، ومتى تحتاج إلى تقييم طبي. لا تعتمد على التخمين أو تشخيص الآخرين.</p>
+            <div class="icon">🩺</div>
+            <h3>1. اعرف مرضك</h3>
+            <p>افهم الأعراض الشائعة، علامات الخطر، ومتى تحتاج إلى تقييم طبي. لا تعتمد على التخمين أو تشخيص الآخرين.</p>
             <span class="tag">Health Literacy</span>
           </article>
           <article class="card">
-            <div class="ico">🔎</div>
-            <h3 data-i18n="card2Title">2. الكشف المبكر ينقذ حياة</h3>
-            <p data-i18n="card2Text">تعرف على أهمية قياس ضغط الدم والسكر، متابعة الحمل والطفولة، والفحوصات المناسبة حسب العمر وعوامل الخطورة.</p>
-            <span class="tag">Early Detection</span>
+            <div class="icon">🔎</div>
+            <h3>2. الكشف المبكر ينقذ حياة</h3>
+            <p>التقييم الدوري، قياس ضغط الدم، السكر، الفحوصات المناسبة، والمتابعة بحسب العمر والخطر.</p>
+            <span class="tag">Early detection</span>
           </article>
           <article class="card">
-            <div class="ico">🌿</div>
-            <h3 data-i18n="card3Title">3. الحقيقة وراء الطب الشعبي</h3>
-            <p data-i18n="card3Text">ليس كل ما هو طبيعي آمنًا. بعض الأعشاب قد تتداخل مع الأدوية أو تؤخر العلاج الفعال. اسأل مختصًا قبل الاستخدام.</p>
-            <span class="tag">Science Over Myths</span>
+            <div class="icon">🌿</div>
+            <h3>3. الحقيقة وراء الطب الشعبي</h3>
+            <p>بعض الأعشاب قد تتداخل مع الأدوية أو تؤخر العلاج الفعال. اسأل مختصًا قبل الاستخدام.</p>
+            <span class="tag">Science over myths</span>
           </article>
           <article class="card">
-            <div class="ico">🌍</div>
-            <h3 data-i18n="card4Title">4. البيئة وصحة الإنسان</h3>
-            <p data-i18n="card4Text">تعرف على أثر المياه غير الآمنة، تلوث الهواء، تراكم النفايات، وسوء استخدام المبيدات على الصحة العامة.</p>
-            <span class="tag">Environmental Health</span>
+            <div class="icon">🌍</div>
+            <h3>4. البيئة وصحة الإنسان</h3>
+            <p>المياه غير الآمنة، التلوث، النفايات، والمبيدات لها أثر مباشر على الصحة.</p>
+            <span class="tag">Environmental health</span>
           </article>
           <article class="card">
-            <div class="ico">💡</div>
-            <h3 data-i18n="card5Title">5. اسأل قبل ما تصدّق</h3>
-            <p data-i18n="card5Text">تحقق من مصدر المعلومة الطبية، لا تنشر وصفة أو نصيحة مجهولة، وارجع إلى الطبيب أو الصيدلي عند الشك.</p>
-            <span class="tag">Media &amp; Health Literacy</span>
+            <div class="icon">💡</div>
+            <h3>5. اسأل قبل ما تصدّق</h3>
+            <p>التأكد من مصدر المعلومة وطلب استشارة مختص عند الشك أو عند ظهور أعراض خطيرة.</p>
+            <span class="tag">Media literacy</span>
           </article>
           <article class="card">
-            <div class="ico">🤖</div>
-            <h3 data-i18n="card6Title">6. التكنولوجيا والذكاء الاصطناعي</h3>
-            <p data-i18n="card6Text">استخدم الأدوات الرقمية للتوعية، الإبلاغ عن المخاطر، وتنظيم المعلومات. التقنية تساعدنا لكنها لا تستبدل المختصين أو الفحوصات.</p>
-            <span class="tag">AI for Community Health</span>
+            <div class="icon">🤖</div>
+            <h3>6. الذكاء الاصطناعي والأمان</h3>
+            <p>المساعد التوعوي يساعد على المعلومات العامة فقط، ولا يحل محل الطبيب أو المعتمد في الرعاية الصحية.</p>
+            <span class="tag">AI for community safety</span>
           </article>
         </div>
       </div>
     </section>
 
     <section id="myths" class="feature">
-      <div class="wrap">
+      <div class="container">
         <div class="section-head">
-          <span class="kicker">MYTH VS. MEDICAL FACT</span>
-          <h2 data-i18n="mythsTitle">صح ولا غلط؟</h2>
-          <p data-i18n="mythsText">معلومة صغيرة ممكن تغيّر قرارًا كبيرًا. اختبر معلوماتك.</p>
+          <span class="kicker">MYTH VS FACT</span>
+          <h2>صح ولا غلط؟</h2>
+          <p>معلومة صغيرة قد تغير قرارًا كبيرًا. اختبر معلوماتك.</p>
         </div>
 
         <div class="two-col">
-          <div class="panel myth-grid">
-            <div class="myth-item"><b class="bad">❌ «لو المياه شكلها صافي تبقى آمنة»</b><span class="good">✓ الحقيقة: صفاء المياه لا يثبت خلوها من المي��روبات أو الملوثات الكيميائية. السلامة تحتاج إلى مصدر موثوق وفحص مناسب.</span></div>
-            <div class="myth-item"><b class="bad">❌ «كل الأعشاب طبيعية، يبقى مفيش منها ضرر»</b><span class="good">✓ الحقيقة: بعض الأعشاب قد تسبب آثارًا جانبية أو تتداخل مع الأدوية.</span></div>
-            <div class="myth-item"><b class="bad">❌ «الضغط العالي لازم يعمل صداع»</b><span class="good">✓ الحقيقة: ارتفاع ضغط الدم غالبًا لا يسبب أعراضًا واضحة؛ القياس هو الطريقة لمعرفة مستواه.</span></div>
-            <div class="myth-item"><b class="bad">❌ «حرق القمامة طريقة سهلة للتخلص منها»</b><span class="good">✓ الحقيقة: الحرق المكشوف قد يطلق ملوثات ضارة؛ استخدم قنوات جمع المخلفات المعتمدة.</span></div>
+          <div class="panel myths">
+            <div class="myth"><strong class="text-red">❌ «لو المياه شكلها صافي تبقى آمنة»</strong><span class="text-green">✓ الحقيقة: الصفاء لا يثبت خلوها من الميكروبات أو الملوثات الكيميائية. تحتاج إلى مصدر موثوق وفحص مناسب.</span></div>
+            <div class="myth"><strong class="text-red">❌ «كل الأعشاب طبيعية فلا ضرر منها»</strong><span class="text-green">✓ الحقيقة: بعض الأعشاب قد تسبب آثارًا جانبية أو تتداخل مع الأدوية.</span></div>
+            <div class="myth"><strong class="text-red">❌ «الضغط العالي لازم يعمل صداع»</strong><span class="text-green">✓ الحقيقة: غالبًا لا يسبب أعراضًا واضحة؛ القياس هو الطريق لمعرفة مستواه.</span></div>
+            <div class="myth"><strong class="text-red">❌ «حرق القمامة أسهل»</strong><span class="text-green">✓ الحقيقة: الحرق المكشوف قد يسبب تلوثًا للهواء ويتسبب في أضرار صحية.</span></div>
           </div>
 
           <div class="panel">
-            <h3 style="margin-top:0" data-i18n="quizHeading">اختبر نفسك</h3>
-            <p class="small" data-i18n="quizQuestion">هل يمكن الحكم على سلامة مياه الشرب من شكلها فقط؟</p>
-            <div class="quick-btns">
+            <h3 style="margin-top:0">اختبر نفسك</h3>
+            <p>هل يمكن الحكم على سلامة مياه الشرب من شكلها فقط؟</p>
+            <div class="quick-buttons">
               <button type="button" onclick="answerQuiz(false)">أيوه، لو صافية</button>
-              <button type="button" onclick="answerQuiz(true)">لا، لازم مصدر آمن وفحص مناسب</button>
+              <button type="button" onclick="answerQuiz(true)">لا، يحتاج فحصًا ومصدرًا موثوقًا</button>
             </div>
             <div id="quizResult" class="notice" style="display:none"></div>
-            <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
-            <h3 data-i18n="goldenRuleHeading">قاعدة ذهبية</h3>
-            <p data-i18n="goldenRuleText">لو المعلومة بتطلب منك توقف دواء موصوف، أو تستخدم مادة مجهولة، أو تتجاهل عرضًا خطيرًا، ما تعتمدش عليها من غير مراجعة مختص.</p>
+            <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+            <h3>قاعدة ذهبية</h3>
+            <p>لو المعلومة بتطلب منك توقف دواء موصوف، أو تستخدم مادة مجهولة، أو تتجاهل عرضًا خطرًا، فلا تعتمد عليها دون استشارة مختص.</p>
           </div>
         </div>
       </div>
     </section>
 
     <section id="environment">
-      <div class="wrap">
+      <div class="container">
         <div class="section-head">
           <span class="kicker">ENVIRONMENTAL HEALTH LITERACY</span>
-          <h2 data-i18n="environmentTitle">إزاي نحمي صحتنا من المخاطر البيئية؟</h2>
-          <p data-i18n="environmentText">خطوات عملية عامة، مع الرجوع للجهات المختصة عند وجود خطر أو تلوث محتمل.</p>
+          <h2>إزاي نحمي صحتنا من المخاطر البيئية؟</h2>
+          <p>خطوات عملية عامة، مع الرجوع للجهات المختصة عند وجود خطر أو تلوث محتمل.</p>
         </div>
 
         <div class="cards">
-          <article class="card"><div class="ico">💧</div><h3>المياه</h3><p>استخدم مصدر مياه مأمونًا، واحفظ المياه في أوعية نظيفة ومغطاة. لا تعتبر الغلي حلًا لكل أنواع التلوث؛ فهو لا يزيل الملوثات الكيميائية.</p></article>
-          <article class="card"><div class="ico">🗑️</div><h3>النفايات</h3><p>لا تحرق المخلفات ولا تخلط النفايات الحادة أو الطبية بالمنزلية. اسأل عن نظام الجمع أو التسليم المعتمد في منطقتك.</p></article>
-          <article class="card"><div class="ico">🧴</div><h3>المبيدات والمواد الكيميائية</h3><p>اتبع ملصق المنتج وتعليمات الوقاية، أبعده عن الأطفال والطعام، ولا تنقل المبيد إلى زجاجة مياه أو عبوة مشروبات.</p></article>
-          <article class="card"><div class="ico">🌫️</div><h3>الهواء</h3><p>تجنب حرق القمامة والبلاستيك. قلل التعرض للدخان والغبار قدر الإمكان، واطلب المساعدة عند حدوث ضيق تنفس شديد.</p></article>
-          <article class="card"><div class="ico">🧼</div><h3>النظافة والصرف</h3><p>اغسل يديك بالماء والصابون، واحمِ الطعام من الحشرات، وأبلغ الجهة المحلية عن تسربات الصرف أو تجمعات المياه الراكدة.</p></article>
-          <article class="card"><div class="ico">📣</div><h3>المشاركة المجتمعية</h3><p>وثّق المشكلة من مكان آمن، وحدد موقعها، وأبلغ الجهة المسؤولة. لا تلمس موادًا مجهولة ولا تجمع عينات بنفسك.</p></article>
+          <article class="card"><div class="icon">💧</div><h3>المياه</h3><p>استخدم مصدر مياه مأمونًا، وخزّنها في أوعية نظيفة ومغطاة. الغلي لا يزيل كل الملوثات الكيميائية.</p></article>
+          <article class="card"><div class="icon">🗑️</div><h3>النفايات</h3><p>لا تحرق المخلفات أو تخلط النفايات الحادة أو الطبية بالمنزلية. استخدم نظام جمع موثوق.</p></article>
+          <article class="card"><div class="icon">🧴</div><h3>المبيدات</h3><p>اتبع تعليمات ملصق المنتج، أبعده عن الأطفال والطعام، ولا تعيد استخدام العبوة في أغراض أخرى.</p></article>
+          <article class="card"><div class="icon">🌫️</div><h3>الهواء</h3><p>تجنب حرق القمامة أو البلاستيك، وقلل التعرض للدخان أو الغبار قدر الإمكان.</p></article>
+          <article class="card"><div class="icon">🧼</div><h3>النظافة والصرف</h3><p>اغسل يديك بالماء والصابون، واحمِ الطعام من الحشرات، وأبلغ عن أي تسرب أو تجمع مياه راكدة.</p></article>
+          <article class="card"><div class="icon">📣</div><h3>المشاركة المجتمعية</h3><p>وثّق المشكلة من مكان آمن، وحدد الموقع بشكل عام، وأبلغ الجهة المختصة وفق القنوات الرسمية.</p></article>
         </div>
       </div>
     </section>
 
     <section id="report" class="feature">
-      <div class="wrap two-col">
+      <div class="container two-col">
         <div>
           <div class="section-head">
             <span class="kicker">COMMUNITY REPORTING</span>
-            <h2 data-i18n="reportTitle">شفت مشكلة بيئية؟ ساعدنا نرصدها</h2>
-            <p data-i18n="reportText">النموذج التالي نموذج توضيحي لجمع بلاغ تجريبي. في النسخة المنشورة يجب ربطه بجهة مسؤولة عن استقبال البلاغات ومراجعتها.</p>
+            <h2>شفت مشكلة بيئية؟ ساعدنا نرصدها</h2>
+            <p>النموذج التالي تجريبي فقط. في النسخة الحقيقية لازم يكون له ربط بجهة رسمية لاستقبال البلاغات.</p>
           </div>
 
           <div class="steps">
-            <div class="step"><p><b>سجّل نوع المشكلة</b> مياه، نفايات، مبيدات، هواء أو صرف صحي.</p></div>
-            <div class="step"><p><b>حدد المكان بشكل عام</b> القرية أو الحي، دون نشر بياناتك الشخصية.</p></div>
-            <div class="step"><p><b>لا تعرض نفسك للخطر</b> لا تلمس مواد مجهولة ولا تقترب من مصدر تلوث مشتبه به.</p></div>
+            <div class="step"><p><strong>سجّل نوع المشكلة</strong> مياه، نفايات، مبيدات، هواء أو صرف صحي.</p></div>
+            <div class="step"><p><strong>حدد المكان بشكل عام</strong> اسم الحي أو القرية دون نشر بيانات شخ��ية.</p></div>
+            <div class="step"><p><strong>لا تعرض نفسك للخطر</strong> لا تلمس مواد مجهولة ولا تقترب من مصدر تلوث مشتبه به.</p></div>
           </div>
 
-          <div class="notice">تنبيه: إرسال النموذج في هذه النسخة لا يرسل بلاغًا إلى جهة حكومية ولا يرفع البيانات إلى خادم. استخدم قنوات الإبلاغ الرسمية الموضحة أسفل الصفحة للبلاغات الفعلية.</div>
+          <div class="notice">تنبيه: هذا النموذج لا يرسل بلاغًا فعليًا لأي جهة، ولا يرفع البيانات إلى خادم. استخدم القنوات الرسمية عند الحاجة.</div>
         </div>
 
         <div class="panel">
           <h3 style="margin-top:0">نموذج بلاغ تجريبي</h3>
           <form id="reportForm">
-            <div class="formgrid">
+            <div class="settings">
               <div class="field">
                 <label for="type">نوع المشكلة</label>
                 <select id="type" required>
@@ -479,45 +397,56 @@
                 <label for="place">المنطقة (وصف عام)</label>
                 <input id="place" placeholder="اسم القرية أو الحي" required>
               </div>
-              <div class="field full">
-                <label for="desc">وصف مختصر</label>
-                <textarea id="desc" placeholder="ما الذي لاحظته؟ ومتى؟" required></textarea>
-              </div>
+            </div>
+            <div class="field" style="margin-top:12px;">
+              <label for="desc">وصف مختصر</label>
+              <textarea id="desc" placeholder="ما الذي لاحظته؟ ومتى؟" required></textarea>
             </div>
             <button class="btn" type="submit" style="margin-top:14px;width:100%">جهّز ملخص البلاغ</button>
-            <div id="reportSuccess" class="success" role="status"></div>
+            <div id="reportSuccess" class="notice" style="display:none"></div>
           </form>
         </div>
       </div>
     </section>
 
     <section id="assistant">
-      <div class="wrap two-col">
+      <div class="container two-col">
         <div>
           <div class="section-head">
             <span class="kicker">ASK ECO-HEALTH</span>
-            <h2 data-i18n="assistantTitle">اسأل المساعد التوعوي</h2>
-            <p data-i18n="assistantText">جرّب أسئلة عن المياه والنفايات والمبيدات والوعي الصحي. هذه نسخة توضيحية بإجابات إرشادية محدودة وليست خدمة ذكاء اصطناعي متصلة أو بديلًا عن المختص.</p>
+            <h2>اسأل المساعد التوعوي</h2>
+            <p>المساعد يجيب على الأسئلة الصحية والبيئية العامة باستخدام إرشادات منظمة الصحة العالمية ووزارة الصحة المصرية، ولا يبدل الطبيب. إذا كان السؤال يتعلق بأعراض خطيرة أو حالة طارئة، يطلب استشارة طبية فورًا.</p>
           </div>
 
-          <div class="quick-btns">
+          <div class="quick-buttons">
             <button type="button" onclick="askQuick('هل المياه الصافية آمنة للشرب؟')">سلامة المياه</button>
             <button type="button" onclick="askQuick('كيف أتعامل مع عبوة مبيد؟')">عبوات المبيدات</button>
             <button type="button" onclick="askQuick('هل أحرق القمامة؟')">حرق القمامة</button>
             <button type="button" onclick="askQuick('متى أطلب مساعدة طبية؟')">متى أطلب المساعدة؟</button>
           </div>
 
-          <div class="api-key-box">
-            <input id="apiKeyInput" type="password" placeholder="OpenAI / OpenRouter API Key (اختياري)" aria-label="API key">
-            <button class="btn secondary" type="button" onclick="saveApiKey()">حفظ المفتاح</button>
+          <div class="settings" style="margin-top:18px;">
+            <div class="field">
+              <label for="apiKeyInput">API key (اختياري)</label>
+              <input id="apiKeyInput" type="password" placeholder="OpenAI أو OpenRouter Key">
+            </div>
+            <div class="field">
+              <label for="workerUrlInput">Worker URL (اختياري)</label>
+              <input id="workerUrlInput" type="url" placeholder="https://your-worker.example.com/api/health">
+            </div>
           </div>
 
-          <p class="small" style="margin-top:18px">لإطلاق مساعد AI حقيقي، يلزم ربط الواجهة بخدمة موثوقة، ومراجعة محتواها طبيًا، وحماية بيانات المستخدمين.</p>
+          <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn secondary" type="button" onclick="saveApiKey()">حفظ المفتاح</button>
+            <button class="btn secondary" type="button" onclick="saveWorkerUrl()">حفظ رابط الـ Worker</button>
+          </div>
+
+          <div class="notice">نصيحة: في النسخة الإنتاجية، الأفضل حفظ المفتاح على خادم آمن وليس في المتصفح؛ هذا الحقل فقط لأغراض الاختبار والواجهة التجريبية.</div>
         </div>
 
         <div class="panel assistant-wrap">
           <div class="chatlog" id="chatlog" aria-live="polite">
-            <div class="bubble bot">أهلًا بيك 🌿 أنا مساعد توعوي تجريبي. أسألني عن المياه أو النفايات أو المبيدات أو علامات الخطر الصحية.</div>
+            <div class="bubble bot">أهلًا بيك 🌿 أنا مساعد توعوي آمن. أجيب على أسئلة عامة عن المياه، النفايات، المبيدات، والأعراض الطبية العامة، ووجهك دائمًا لاستشارة الطبيب عند الحاجة.</div>
           </div>
           <div class="chat-row">
             <input id="chatInput" placeholder="اكتب سؤالك هنا..." aria-label="اكتب سؤالك">
@@ -528,7 +457,7 @@
     </section>
 
     <section id="resources" class="feature">
-      <div class="wrap">
+      <div class="container">
         <div class="section-head">
           <span class="kicker">TRUSTED SOURCES</span>
           <h2>المعلومة من مصدرها</h2>
@@ -536,165 +465,105 @@
         </div>
 
         <div class="resources">
-          <a class="resource" href="https://www.who.int/health-topics/water-sanitation-and-hygiene-wash" target="_blank" rel="noopener"><b>WHO – Water, Sanitation &amp; Hygiene</b><span>معلومات عن المياه والصرف والنظافة</span></a>
-          <a class="resource" href="https://www.who.int/health-topics/chemical-safety" target="_blank" rel="noopener"><b>WHO – Chemical Safety</b><span>السلامة والتعرض للمواد الكيميائية</span></a>
-          <a class="resource" href="https://www.who.int/health-topics/air-pollution" target="_blank" rel="noopener"><b>WHO – Air Pollution</b><span>تلوث الهواء والصحة</span></a>
-          <a class="resource" href="https://eeaa.gov.eg/" target="_blank" rel="noopener"><b>وزارة البيئة المصرية</b><span>المعلومات والخدمات البيئية الرسمية</span></a>
-          <a class="resource" href="https://www.shakwa.eg/" target="_blank" rel="noopener"><b>بوابة الشكاوى الحكومية</b><span>قناة رسمية لتقديم الشكاوى ومتابعتها</span></a>
-          <a class="resource" href="https://www.who.int/health-topics/health-literacy" target="_blank" rel="noopener"><b>WHO – Health Literacy</b><span>الثقافة الصحية وتمكين الأفراد</span></a>
+          <a class="resource" href="https://www.who.int/health-topics/water-sanitation-and-hygiene-wash" target="_blank" rel="noopener"><strong>WHO – Water, Sanitation & Hygiene</strong><span>معلومات عن المياه والصرف والنظافة</span></a>
+          <a class="resource" href="https://www.who.int/health-topics/chemical-safety" target="_blank" rel="noopener"><strong>WHO – Chemical Safety</strong><span>السلامة والتعرض للمواد الكيميائية</span></a>
+          <a class="resource" href="https://www.who.int/health-topics/air-pollution" target="_blank" rel="noopener"><strong>WHO – Air Pollution</strong><span>تلوث الهواء والصحة</span></a>
+          <a class="resource" href="https://www.mohp.gov.eg/" target="_blank" rel="noopener"><strong>وزارة الصحة المصرية</strong><span>المعلومات والخدمات الصحية الرسمية</span></a>
+          <a class="resource" href="https://www.eeaa.gov.eg/" target="_blank" rel="noopener"><strong>وزارة البيئة المصرية</strong><span>البيئة، التلوث، والتوعية البيئية</span></a>
+          <a class="resource" href="https://www.who.int/health-topics/health-literacy" target="_blank" rel="noopener"><strong>WHO – Health Literacy</strong><span>الثقافة الصحية وتمكين الأفراد</span></a>
         </div>
 
-        <p class="disclaimer"><b>إخلاء مسؤولية:</b> المحتوى للتوعية العامة ولا يقدم تشخيصًا أو وصف علاج. لا توقف دواءً موصوفًا ولا تؤخر طلب الرعاية بسبب محتوى الموقع أو رد مساعد آلي. في الطوارئ الطبية اطلب الإسعاف أو توجه لأقرب قسم طوارئ. لا يمكن تحديد صلاحية مياه الشرب أو وجود تلوث كيميائي من صورة أو وصف فقط؛ يلزم تقييم وفحص معتمد.</p>
+        <p class="disclaimer"><strong>إخلاء مسؤولية:</strong> المحتوى للتوعية العامة ولا يقدم تشخيصًا أو وصف علاج. لا توقف دواءً موصوفًا ولا تؤخر طلب الرعاية بسبب محتوى الموقع أو رد مساعد آلي. في الطوارئ الطبية اطلب الإسعاف أو التوجه لأقرب قسم طوارئ. لا يمكن تحديد صلاحية مياه الشرب أو وجود تلوث كيميائي من صورة أو وصف فقط؛ يلزم تقييم وفحص معتمد.</p>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="wrap foot">
+    <div class="container footer-inner">
       <div class="mini-brand">
-        <span class="brandmark">🌿</span>
+        <span class="brand-mark">🌿</span>
         <div>
           <div>ECO-HEALTH 360°</div>
           <small style="color:#cfe2da;">AWARENESS SAVES LIVES</small>
         </div>
       </div>
-      <p>وعي صحي • بيئة آمنة • مجتمع أقوى</p>
+      <p style="margin:0;color:#d6eae0;">وعي صحي • بيئة آمنة • مجتمع أقوى</p>
     </div>
   </footer>
 
   <script>
-    const translations = {
-      ar: {
-        brand: 'ECO-HEALTH 360°',
-        navAxes: 'محاور التوعية',
-        navMyths: 'صح ولا غلط؟',
-        navReport: 'بلّغ عن مشكلة',
-        navAssistant: 'اسأل المساعد',
-        navResources: 'مصادر موثوقة',
-        navCTA: 'ابدأ التوعية',
-        eyebrow: '🌱 مبادرة مجتمعية • صحة وبيئة ووعي',
-        heroTitle: 'وعي ينقذ حياة،<br><span class="accent">وبيئة تحمي مستقبلنا.</span>',
-        heroText: 'من المعلومة الطبية الموثوقة إلى السلوك الوقائي. مساحة بسيطة تساعدك تفهم صحتك، تميّز المعلومة الصحيحة، وتتعرف على طرق حماية بيئتك ومجتمعك.',
-        heroBtn1: 'اكتشف محاورنا ←',
-        heroBtn2: 'أبلغ عن مشكلة بيئية',
-        stat1b: '6 محاور', stat1s: 'لصحة أفضل',
-        stat2b: 'ببساطة', stat2s: 'معلومة مفهومة',
-        stat3b: 'معًا', stat3s: 'نشارك ونحمي',
-        pillarsKicker: 'OUR SIX PILLARS',
-        pillarsTitle: 'ستة محاور… لقرار صحي أذكى',
-        pillarsText: 'اختاري الموضوع اللي يهمك، اقرئي الرسالة الأساسية، وشاركيها مع أسرتك ومجتمعك.',
-        mythsTitle: 'صح ولا غلط؟',
-        mythsText: 'معلومة صغيرة ممكن تغيّر قرارًا كبيرًا. اختبر معلوماتك.',
-        quizHeading: 'اختبر نفسك',
-        quizQuestion: 'هل يمكن الحكم على سلامة مياه الشرب من شكلها فقط؟',
-        goldenRuleHeading: 'قاعدة ذهبية',
-        goldenRuleText: 'لو المعلومة بتطلب منك توقف دواء موصوف، أو تستخدم مادة مجهولة، أو تتجاهل عرضًا خطيرًا، ما تعتمدش عليها من غير مراجعة مختص.',
-        environmentTitle: 'إزاي نحمي صحتنا من المخاطر البيئية؟',
-        environmentText: 'خطوات عملية عامة، مع الرجوع للجهات المختصة عند وجود خطر أو تلوث محتمل.',
-        reportTitle: 'شفت مشكلة بيئية؟ ساعدنا نرصدها',
-        reportText: 'النموذج التالي نموذج توضيحي لجمع بلاغ تجريبي. في النسخة المنشورة يجب ربطه بجهة مسؤولة عن استقبال البلاغات ومراجعتها.',
-        assistantTitle: 'اسأل المساعد التوعوي',
-        assistantText: 'جرّب أسئلة عن المياه والنفايات والمبيدات والوعي الصحي. هذه نسخة توضيحية بإجابات إرشادية محدودة وليست خدمة ذكاء اصطناعي متصلة أو بديلًا عن المختص.'
-      },
-      en: {
-        brand: 'ECO-HEALTH 360°',
-        navAxes: 'Awareness Areas',
-        navMyths: 'Myth or Fact?',
-        navReport: 'Report an Issue',
-        navAssistant: 'Ask the Assistant',
-        navResources: 'Trusted Sources',
-        navCTA: 'Start Awareness',
-        eyebrow: '🌱 Community initiative • health, environment & awareness',
-        heroTitle: 'Awareness saves lives,<br><span class="accent">and a healthier environment protects our future.</span>',
-        heroText: 'From reliable medical information to preventive action. A simple space that helps you understand your health, recognize trustworthy guidance, and protect your environment and community.',
-        heroBtn1: 'Explore our pillars →',
-        heroBtn2: 'Report an environmental issue',
-        stat1b: '6 pillars', stat1s: 'for better health',
-        stat2b: 'Simply', stat2s: 'clear information',
-        stat3b: 'Together', stat3s: 'we protect each other',
-        pillarsKicker: 'OUR SIX PILLARS',
-        pillarsTitle: 'Six pillars for a smarter, healthier decision',
-        pillarsText: 'Choose the topic that matters to you, read the core message, and share it with your family and community.',
-        mythsTitle: 'Myth or fact?',
-        mythsText: 'A small fact can change a big decision. Test your knowledge.',
-        quizHeading: 'Test yourself',
-        quizQuestion: 'Can you judge the safety of drinking water just by its appearance?',
-        goldenRuleHeading: 'Golden rule',
-        goldenRuleText: 'If the information asks you to stop a prescribed medicine, use an unknown substance, or ignore a serious symptom, do not rely on it without consulting a professional.',
-        environmentTitle: 'How can we protect our health from environmental risks?',
-        environmentText: 'Practical general steps, while consulting relevant authorities when a possible danger or contamination is suspected.',
-        reportTitle: 'Saw an environmental problem? Help us monitor it',
-        reportText: 'This form is an illustrative example for collecting a test report. In the published version, it should be connected to a proper reporting authority.',
-        assistantTitle: 'Ask the awareness assistant',
-        assistantText: 'Try questions about water, waste, pesticides, and health awareness. This is a limited educational demo and not a real connected AI service or substitute for a professional.'
-      }
-    };
+    const emergencyPatterns = [
+      'صعوبة تنفس', 'تشنجات', 'فقدان وعي', 'نزيف شديد', 'ألم صدر', 'تقيؤ دم',
+      'الدوخة الشديدة', 'توقف التنفس', 'توعك شديد', 'حوادث', 'سيلان دم',
+      'لديه حمى مرتفعة', 'لديه قيء شديد', 'تسمم', 'تدبير طارئ'
+    ];
 
-    let currentLang = 'ar';
-
-    function applyTranslations(lang) {
-      currentLang = lang;
-      const nodes = document.querySelectorAll('[data-i18n]');
-      nodes.forEach(node => {
-        const key = node.dataset.i18n;
-        if (translations[lang] && translations[lang][key]) {
-          node.innerHTML = translations[lang][key];
-        }
-      });
-      document.documentElement.lang = lang;
-      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-      document.getElementById('langToggle').textContent = lang === 'ar' ? 'EN' : 'AR';
-    }
-
-    document.getElementById('langToggle').addEventListener('click', () => {
-      applyTranslations(currentLang === 'ar' ? 'en' : 'ar');
-    });
-
-    function answerQuiz(correct) {
-      const box = document.getElementById('quizResult');
-      box.style.display = 'block';
-      box.textContent = correct
-        ? 'إجابة صحيحة! صفاء المياه لا يكفي للحكم على سلامتها؛ نحتاج مصدرًا موثوقًا وفحصًا مناسبًا.'
-        : 'مش بالضرورة. ممكن المياه تبدو صافية ومع ذلك تحتوي على ملوثات لا تُرى بالعين.';
-    }
-
-    document.getElementById('reportForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const type = document.getElementById('type').value;
-      const place = document.getElementById('place').value.trim();
-      const desc = document.getElementById('desc').value.trim();
-      const box = document.getElementById('reportSuccess');
-      box.style.display = 'block';
-      box.textContent = 'ملخص تجريبي (لم يتم إرساله): نوع المشكلة: ' + type + ' | المنطقة: ' + place + ' | الوصف: ' + desc;
-    });
-
-    function addBubble(text, kind) {
-      const log = document.getElementById('chatlog');
-      const bubble = document.createElement('div');
-      bubble.className = 'bubble ' + kind;
-      bubble.textContent = text;
-      log.appendChild(bubble);
-      log.scrollTop = log.scrollHeight;
+    function isEmergencyQuestion(question) {
+      const q = question.toLowerCase();
+      return emergencyPatterns.some(p => q.includes(p));
     }
 
     function getLocalFallback(question) {
-      const q = question.toLowerCase();
+      const q = question.toLowerCase().trim();
+
+      if (isEmergencyQuestion(q)) {
+        return 'هذا قد يحتاج تقييمًا طارئًا. إذا عندك صعوبة في التنفس، ألم صدر شديد، نزيف شديد، فقدان وعي، تشنجات، أو تقيؤ دم، فاطلب الطوارئ أو توجه إلى أقرب مستشفى فورًا. هذا المساعد توعوي فقط ولا يحل محل الطبيب.';
+      }
+
       if (q.includes('مياه') || q.includes('ماء') || q.includes('شرب') || q.includes('صافي')) {
-        return 'صفاء المياه لا يثبت سلامتها. استخدم مصدرًا مأمونًا، وخزّن المياه في وعاء نظيف ومغطى. الغلي قد يساعد ضد كثير من الميكروبات لكنه لا يزيل الملوثات الكيميائية. عند الشك، تواصل مع جهة المياه أو معمل معتمد للفحص.';
+        return 'صفاء المياه لا يثبت سلامتها. استخدم مصدرًا مأمونًا، وخزّن المياه في أوعية نظيفة ومغطاة. الغلي قد يقتل بعض الميكروبات لكنه لا يزيل كل الملوثات الكيميائية. إذا عندك شك في جودة الماء أو أعراض معدية، استشر طبيبًا أو جهة المياه المعتمدة.';
       }
-      if (q.includes('مبيد') || q.includes('عبوة') || q.includes('كيما')) {
-        return 'اتبع تعليمات ملصق المنتج والجهات المختصة. أبعد المبيدات عن الأطفال والطعام، ولا تنقلها إلى عبوات مشروبات أو تعيد استخدام العبوة الفارغة. لا تخلط مواد كيميائية. عند التعرض أو ظهور أعراض، ابتعد عن المصدر واطلب مساعدة طبية/مركز السموم فورًا.';
+
+      if (q.includes('مبيد') || q.includes('عبوة') || q.includes('كيما') || q.includes('سامة')) {
+        return 'اتبع تعليمات ملصق المنتج، واحفظ المبيدات بعيدًا عن الأطفال والطعام، ولا تنقلها إلى عبوات أو أوعية مألوفة. إذا ظهر تهيج، قيء، صعوبة في التنفس، أو بلع غير مقصود لمنتج كيميائي، اتصل بمركز السموم أو توجه للطوارئ فورًا. هذا رد توعوي لا يحدد العلاج.';
       }
+
       if (q.includes('قمامة') || q.includes('حرق') || q.includes('نفايات') || q.includes('مخلفات')) {
-        return 'تجنب حرق القمامة أو البلاستيك؛ الدخان قد يضر الجهاز التنفسي. لا تلمس النفايات الحادة أو المجهولة. استخدم نظام الجمع المحلي، وأبلغ الجهة المختصة عن التراكم أو الحرق.';
+        return 'تجنب حرق القمامة أو البلاستيك؛ الدخان قد يسبب تهيجًا للجهاز التنفسي. اجمع النفايات ضمن أنظمة رسمية، ولا تلمس النفايات المجهولة أو الحادة. إذا كان هناك تلوث أو رائحة قوية أو تلوث جو، تبلغ الجهة المختصة.';
       }
-      if (q.includes('طبيب') || q.includes('مساعدة') || q.includes('أعراض') || q.includes('مرض')) {
-        return 'اطلب تقييمًا طبيًا عند الأعراض المستمرة أو المقلقة. صعوبة التنفس الشديدة، ألم الصدر الشديد، فقدان الوعي أو علامات السكتة تستدعي الطوارئ فورًا. لا تعتمد على المساعد لتشخيص الحالة.';
+
+      if (q.includes('أعراض') || q.includes('طبيب') || q.includes('مساعدة') || q.includes('مرض') || q.includes('استشارة')) {
+        return 'للأعراض أو الحالات غير الواضحة، الأفضل مراجعة طبيب/مركز رعاية صحي أو صيدلي مختص. هذا المساعد يقدم معلومات عامة مبنية على إرشادات منظمة الصحة العالمية ووزارة الصحة المصرية، لكنه لا يبدل الاستشارة الطبية أو التشخيص.';
       }
-      return 'أقدر أساعد بمعلومات توعوية عامة عن المياه والنفايات والمبيدات وتلوث الهواء. اكتب سؤالك بصورة أوضح، وتحقق دائمًا من الإرشادات الرسمية؛ هذه النسخة ليست مساعد AI متصلًا ولا تقدم تشخيصًا.';
+
+      return 'أنا مساعد توعوي صحّي وبيئي. أجيب على أسئلة عامة عن المياه، النفايات، المبيدات، والتغذية، مع إرشادات عربية تتوافق مع مبادئ منظمة الصحة العالمية ووزارة الصحة المصرية. لا أقدم تشخيصًا أو وصف علاج. إذا كانت الحالة مزعجة أو تحسّس/أعراض مستمرة أو خطر، استشر طبيبًا أو قسمًا صحيًا فورًا.';
+    }
+
+    function getSystemPrompt() {
+      return [
+        'You are a safe Arabic health and environmental awareness assistant.',
+        'Use general public-health guidance aligned with WHO principles and Egypt Ministry of Health public guidance.',
+        'Give brief educational answers only. Never diagnose, prescribe, or recommend a treatment plan.',
+        'Always advise consulting a licensed doctor, pharmacist, or clinic when the user has ongoing symptoms, uncertainty, pregnancy, chronic conditions, children, or severe concerns.',
+        'If the user mentions emergency symptoms such as breathing difficulty, severe chest pain, bleeding, unconsciousness, seizure, severe allergic reaction, poisoning, or severe dehydration, tell them to seek urgent medical care immediately and say the assistant is not a medical diagnosis tool.',
+        'Keep the answer short, plain Arabic, actionable, and safety-oriented.'
+      ].join(' ');
+    }
+
+    function getWorkerEndpoint() {
+      const stored = localStorage.getItem('eco_health_worker_url') || '';
+      return stored || (window.ECOHEALTH_API_URL || '');
     }
 
     async function getAiReply(question) {
+      const workerUrl = getWorkerEndpoint();
+      if (workerUrl) {
+        try {
+          const response = await fetch(workerUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question, locale: 'ar' })
+          });
+          if (response.ok) {
+            const data = await response.json();
+            const answer = data?.answer || data?.response || '';
+            if (answer && answer.trim()) return answer.trim();
+          }
+        } catch (err) {
+          console.warn('Worker endpoint failed, fallback to local guidance:', err);
+        }
+      }
+
       const apiKey = localStorage.getItem('eco_health_ai_key') || '';
       if (apiKey) {
         try {
@@ -706,11 +575,11 @@
             },
             body: JSON.stringify({
               model: 'gpt-4o-mini',
-              messages: [{
-                role: 'system',
-                content: 'You are a helpful community health and environmental awareness assistant in Arabic. Give brief, safe, non-diagnostic advice, mention to consult licensed professionals, and avoid medical diagnoses.'
-              }, { role: 'user', content: question }],
-              temperature: 0.6
+              temperature: 0.5,
+              messages: [
+                { role: 'system', content: getSystemPrompt() },
+                { role: 'user', content: question }
+              ]
             })
           });
 
@@ -720,10 +589,20 @@
             if (content && content.trim()) return content.trim();
           }
         } catch (err) {
-          console.warn('AI API call failed, using fallback:', err);
+          console.warn('OpenAI API failed, fallback to local guidance:', err);
         }
       }
+
       return getLocalFallback(question);
+    }
+
+    function addBubble(text, type) {
+      const log = document.getElementById('chatlog');
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble ' + type;
+      bubble.textContent = text;
+      log.appendChild(bubble);
+      log.scrollTop = log.scrollHeight;
     }
 
     function saveApiKey() {
@@ -731,11 +610,23 @@
       const key = input.value.trim();
       if (!key) {
         localStorage.removeItem('eco_health_ai_key');
-        addBubble('تم حذف مفتاح الذكاء الاصطناعي. الآن سيتم استخدام الردود المحلية.', 'bot');
+        addBubble('تم حذف المفتاح. الآن سيستخدم الموقع الردود الآمنة المحلية.', 'bot');
         return;
       }
       localStorage.setItem('eco_health_ai_key', key);
-      addBubble('تم حفظ مفتاح الذكاء الاصطناعي بنجاح. يمكنك الآن تجربة أسئلة حقيقية.', 'bot');
+      addBubble('تم حفظ مفتاح الذكاء الاصطناعي محليًا في المتصفح. يُستخدم فقط للاختبار، ويُفضّل في النسخة الإنتاجية استخدام خادم آمن.', 'bot');
+    }
+
+    function saveWorkerUrl() {
+      const input = document.getElementById('workerUrlInput');
+      const url = input.value.trim();
+      if (!url) {
+        localStorage.removeItem('eco_health_worker_url');
+        addBubble('تم حذف رابط الـ Worker، وسيُستخدم الرد المحلي الآمن.', 'bot');
+        return;
+      }
+      localStorage.setItem('eco_health_worker_url', url);
+      addBubble('تم حفظ رابط Worker. ستُرسل الأسئلة عبر الخادم الآمن بدل الرد المحلي.', 'bot');
     }
 
     async function sendChat() {
@@ -748,19 +639,39 @@
       addBubble(answer, 'bot');
     }
 
-    function askQuick(q) {
+    function askQuick(question) {
       const input = document.getElementById('chatInput');
-      input.value = q;
+      input.value = question;
       sendChat();
     }
 
-    document.getElementById('chatInput').addEventListener('keydown', (e) => {
+    function answerQuiz(correct) {
+      const box = document.getElementById('quizResult');
+      box.style.display = 'block';
+      box.textContent = correct
+        ? 'إجابة صحيحة: صفاء الماء لا يكفي للحكم على سلامته. تحتاج إلى مصدر موثوق وفحص مناسب.'
+        : 'مش بالضرورة. الماء قد يبدو صافيًا لكنه يحتفظ بملوثات لا ترى بالعين.';
+    }
+
+    document.getElementById('reportForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const type = document.getElementById('type').value;
+      const place = document.getElementById('place').value.trim();
+      const desc = document.getElementById('desc').value.trim();
+      const box = document.getElementById('reportSuccess');
+      box.style.display = 'block';
+      box.textContent = 'ملخص تجريبي (لم يتم إرساله): نوع المشكلة: ' + type + ' | المنطقة: ' + place + ' | الوصف: ' + desc;
+    });
+
+    document.getElementById('chatInput').addEventListener('keydown', function (e) {
       if (e.key === 'Enter') sendChat();
     });
 
-    applyTranslations('ar');
     const savedKey = localStorage.getItem('eco_health_ai_key');
     if (savedKey) document.getElementById('apiKeyInput').value = savedKey;
+
+    const savedWorker = localStorage.getItem('eco_health_worker_url');
+    if (savedWorker) document.getElementById('workerUrlInput').value = savedWorker;
   </script>
 </body>
 </html>
