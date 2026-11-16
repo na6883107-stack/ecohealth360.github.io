@@ -25,7 +25,6 @@ function getAiConfig(env) {
     return {
       provider: 'gemini',
       apiKey: env.GEMINI_API_KEY,
-      // Override this with a model enabled for your Gemini API key if needed.
       model: env.GEMINI_MODEL || 'gemini-2.5-flash'
     };
   }
@@ -87,8 +86,8 @@ function providerError(error, provider) {
   const message = String(error?.message || '');
   if (message.endsWith('_HTTP_400')) return 'إعدادات الطلب أو اسم الموديل غير مقبول. احذفي GEMINI_MODEL مؤقتًا أو اختاري موديلًا متاحًا لحسابك.';
   if (message.endsWith('_HTTP_401') || message.endsWith('_HTTP_403')) return 'مفتاح Gemini غير صالح أو غير مفعّل. أعيدي إضافة GEMINI_API_KEY كـ Secret في هذا الـ Worker.';
-  if (message.endsWith('_HTTP_404')) return 'موديل Gemini المحدد غير موجود/غير متاح. احذفي GEMINI_MODEL أو غيّريه إلى موديل متاح في حسابك.';
-  if (message.endsWith('_HTTP_429')) return 'تم بلوغ حد الاستخدام/الحصة لدى مزود الذكاء الاصطناعي. تحققي من الحصة والفوترة في Google AI Studio.';
+  if (message.endsWith('_HTTP_404')) return 'موديل Gemini المحدد غير موجود أو غير متاح. غيّري GEMINI_MODEL إلى موديل متاح لحسابك.';
+  if (message.endsWith('_HTTP_429')) return 'تم بلوغ حد الاستخدام أو الحصة لدى مزود الذكاء الاصطناعي. تحققي من الحصة في Google AI Studio.';
   if (message.endsWith('_EMPTY_RESPONSE')) return 'مزود الذكاء الاصطناعي أعاد ردًا فارغًا. جرّبي سؤالًا آخر.';
   return `تعذر الاتصال بمزود ${provider}. راجعي سجلات Worker في Cloudflare.`;
 }
@@ -96,10 +95,6 @@ function providerError(error, provider) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.pathname !== '/api/health' && url.pathname !== '/api/health/check') {
-      return env.ASSETS.fetch(request);
-    }
-
     const origin = request.headers.get('Origin') || '';
     if (origin && !ALLOWED_ORIGINS.has(origin)) return new Response('Origin not allowed', { status: 403 });
     const responseOrigin = origin || 'https://na6883107-stack.github.io';
@@ -114,6 +109,13 @@ export default {
           'Vary': 'Origin'
         }
       });
+    }
+
+    // This Worker is an API backend; static website files are hosted on GitHub Pages.
+    // Avoid env.ASSETS.fetch when no assets binding exists (which caused the TypeError in the screenshot).
+    if (url.pathname !== '/api/health' && url.pathname !== '/api/health/check') {
+      if (env.ASSETS && typeof env.ASSETS.fetch === 'function') return env.ASSETS.fetch(request);
+      return jsonResponse({ error: 'Not found. Open the GitHub Pages website for the site UI.' }, 404, responseOrigin);
     }
 
     const ai = getAiConfig(env);
