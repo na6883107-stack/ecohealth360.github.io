@@ -3,7 +3,7 @@ const ALLOWED_ORIGINS = new Set([
   'https://ecohealth360-github-io.na6883107.workers.dev'
 ]);
 const MAX_QUESTION_LENGTH = 1500;
-const SYSTEM_PROMPT = `أنت مساعد توعوي صحي عربي. لا تدّعِ أنك طبيب، ولا تؤكد تشخيص مرض أو تصف دواء أو جرعة أو خطة علاج. اشرح باختصار الاحتمالات العامة ذات الصلة بالأعراض فقط بصيغة غير جازمة، ووضح أن أسبابًا مختلفة قد تعطي أعراضًا متشابهة. قدّم تقييمًا حذرًا لمستوى الاستعجال: طوارئ الآن، تواصل طبي قريب، أو متابعة عامة؛ لا تقلل من الأعراض ولا تضمن السلامة. إذا ذكر المستخدم صعوبة شديدة في التنفس، ألمًا شديدًا بالصدر، علامات سكتة (ضعف مفاجئ بجهة أو اضطراب كلام)، فقدان وعي، تشنجًا، نزيفًا شديدًا، حساسية شديدة، تسممًا، أو تدهورًا حادًا، قل بوضوح أن يتصل بالطوارئ المحلية أو يذهب للطوارئ فورًا ولا ينتظر ردًا آخر. للأطفال والحوامل وكبار السن وذوي الأمراض المزمنة، وجّههم لطلب تقييم مهني مبكرًا. لا تطلب الاسم أو العنوان أو رقم الهاتف أو أي بيانات تعريفية. يمكنك ذكر نصائح عامة منخفضة المخاطر للتعايش مع حالة مشخصة، وشجّع المتابعة مع الطبيب وعدم إيقاف العلاج الموصوف. اكتب بالعربية السهلة، مع سؤال توضيحي عند الحاجة، واذكر أن هذا ليس تشخيصًا وأن التقييم يحتاج مختصًا.`;
+const SYSTEM_PROMPT = `أنت مساعد توعوي صحي عربي. لا تدّعِ أنك طبيب، ولا تؤكد تشخيص مرض أو تصف دواء أو جرعة أو خطة علاج. اشرح المعلومات العامة بشكل بسيط وآمن، ووجه المستخدم إلى الطبيب المختص أو الطوارئ عند الحاجة. لا تطلب بيانات شخصية أو معلومات حساسة. إذا ظهرت علامات طوارئ مثل صعوبة تنفس حادة، فقدان وعي، دم في البراز، ألم صدر شديد، تشنجات، نزف شديد، أو أعراض خطيرة في الطفل، أ urge إلى طلب العناية الطبية الفورية.`;
 
 function jsonResponse(data, status, origin) {
   return new Response(JSON.stringify(data), {
@@ -17,6 +17,89 @@ function jsonResponse(data, status, origin) {
       'Cache-Control': 'no-store'
     }
   });
+}
+
+function getAiConfig(env) {
+  const provider = String(env.AI_PROVIDER || '').trim().toLowerCase();
+
+  if (provider === 'gemini' || env.GEMINI_API_KEY) {
+    return {
+      provider: 'gemini',
+      apiKey: env.GEMINI_API_KEY,
+      model: env.GEMINI_MODEL || 'gemini-2.0-flash'
+    };
+  }
+
+  return {
+    provider: 'openai',
+    apiKey: env.OPENAI_API_KEY,
+    model: env.OPENAI_MODEL || 'gpt-4o-mini'
+  };
+}
+
+async function callGemini(question, model, apiKey) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+  const upstream = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+      contents: [{ role: 'user', parts: [{ text: question }] }],
+      generationConfig: {
+        temperature: 0.2,
+        maxOutputTokens: 600
+      }
+    })
+  });
+
+  if (!upstream.ok) {
+    throw new Error('Gemini request failed');
+  }
+
+  const result = await upstream.json();
+  const answer = result?.candidates?.[0]?.content?.parts
+    ?.map(part => part?.text || '')
+    .join('')
+    .trim();
+
+  if (!answer) {
+    throw new Error('No answer was returned');
+  }
+
+  return answer;
+}
+
+async function callOpenAI(question, model, apiKey) {
+  const upstream = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model,
+      temperature: 0.2,
+      max_tokens: 600,
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'user', content: question }
+      ]
+    })
+  });
+
+  if (!upstream.ok) {
+    throw new Error('OpenAI request failed');
+  }
+
+  const result = await upstream.json();
+  const answer = result?.choices?.[0]?.message?.content?.trim();
+
+  if (!answer) {
+    throw new Error('No answer was returned');
+  }
+
+  return answer;
 }
 
 export default {
@@ -43,34 +126,36 @@ export default {
         }
       });
     }
-    if (request.method !== 'POST') return jsonResponse({ error: 'Method not allowed' }, 405, responseOrigin);
-    if (!env.OPENAI_API_KEY) return jsonResponse({ error: 'Assistant service is not configured' }, 503, responseOrigin);
+
+    if (request.method !== 'POST') {
+      return jsonResponse({ error: 'Method not allowed' }, 405, responseOrigin);
+    }
+
+    const ai = getAiConfig(env);
+    if (!ai.apiKey) {
+      return jsonResponse({ error: 'Assistant service is not configured' }, 503, responseOrigin);
+    }
 
     let body;
-    try { body = await request.json(); }
-    catch { return jsonResponse({ error: 'Invalid JSON body' }, 400, responseOrigin); }
+    try {
+      body = await request.json();
+    } catch {
+      return jsonResponse({ error: 'Invalid JSON body' }, 400, responseOrigin);
+    }
+
     const question = typeof body?.question === 'string' ? body.question.trim() : '';
-    if (!question) return jsonResponse({ error: 'Question is required' }, 400, responseOrigin);
-    if (question.length > MAX_QUESTION_LENGTH) return jsonResponse({ error: 'Question is too long' }, 413, responseOrigin);
+    if (!question) {
+      return jsonResponse({ error: 'Question is required' }, 400, responseOrigin);
+    }
+    if (question.length > MAX_QUESTION_LENGTH) {
+      return jsonResponse({ error: 'Question is too long' }, 413, responseOrigin);
+    }
 
     try {
-      const upstream = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${env.OPENAI_API_KEY}` },
-        body: JSON.stringify({
-          model: env.OPENAI_MODEL || 'gpt-4o-mini',
-          temperature: 0.2,
-          max_tokens: 600,
-          messages: [
-            { role: 'system', content: SYSTEM_PROMPT },
-            { role: 'user', content: question }
-          ]
-        })
-      });
-      if (!upstream.ok) return jsonResponse({ error: 'Assistant service is temporarily unavailable' }, 502, responseOrigin);
-      const result = await upstream.json();
-      const answer = result?.choices?.[0]?.message?.content?.trim();
-      if (!answer) return jsonResponse({ error: 'No answer was returned' }, 502, responseOrigin);
+      const answer = ai.provider === 'gemini'
+        ? await callGemini(question, ai.model, ai.apiKey)
+        : await callOpenAI(question, ai.model, ai.apiKey);
+
       return jsonResponse({ answer }, 200, responseOrigin);
     } catch {
       return jsonResponse({ error: 'Assistant service is temporarily unavailable' }, 502, responseOrigin);
