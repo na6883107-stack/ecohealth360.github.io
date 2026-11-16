@@ -35,7 +35,7 @@
   </main>
   <footer class="foot"><div class="wrap">ECO-HEALTH 360° • المعلومات للتوعية العامة ولا تغني عن الطبيب أو خدمات الطوارئ.</div></footer>
   <script>
-    const WORKER_URL = 'https://ecohealth360-ai-api.na6883107.workers.dev';
+    const WORKER_URL = 'https://ecohealth360-github-io.na6883107.workers.dev/api/health';
     const input = document.getElementById('chatInput');
     const log = document.getElementById('chatlog');
     const button = document.getElementById('sendButton');
@@ -50,7 +50,7 @@
         addBubble(data.answer||'لم يصل رد. حاولي مرة أخرى.','bot');
       } catch(error) {
         addBubble('المساعد غير متاح الآن. إذا كانت الأعراض شديدة أو تتفاقم، تواصلي مع الطوارئ أو طبيب مباشرةً.','bot');
-        document.getElementById('status').textContent='تأكدي من إعداد Worker المساعد ومفتاح الخدمة في Cloudflare.';
+        document.getElementById('status').textContent='تأكدي من إعداد Secret باسم OPENAI_API_KEY في إعدادات Worker الموقع.';
       } finally { button.disabled=false; button.textContent='إرسال السؤال'; }
     }
     button.addEventListener('click',sendChat);
