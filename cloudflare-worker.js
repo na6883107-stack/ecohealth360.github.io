@@ -20,18 +20,32 @@ function jsonResponse(data, status, origin) {
 }
 
 function getAiConfig(env) {
-  const provider = String(env.AI_PROVIDER || '').trim().toLowerCase();
-  if (provider === 'gemini' || (!provider && env.GEMINI_API_KEY)) {
+  const requestedProvider = String(env.AI_PROVIDER || '').trim().toLowerCase();
+
+  // Prefer a configured Gemini key. This avoids a stale AI_PROVIDER=openai variable
+  // forcing the worker to use OpenAI after the site was switched to Gemini.
+  if (env.GEMINI_API_KEY && requestedProvider !== 'openai') {
     return {
       provider: 'gemini',
       apiKey: env.GEMINI_API_KEY,
       model: env.GEMINI_MODEL || 'gemini-2.5-flash'
     };
   }
+
+  // Use OpenAI only when explicitly selected AND its key exists, or when it is the
+  // only provider with a configured key. With no keys, report Gemini as the intended provider.
+  if (env.OPENAI_API_KEY && (requestedProvider === 'openai' || !env.GEMINI_API_KEY)) {
+    return {
+      provider: 'openai',
+      apiKey: env.OPENAI_API_KEY,
+      model: env.OPENAI_MODEL || 'gpt-4o-mini'
+    };
+  }
+
   return {
-    provider: 'openai',
-    apiKey: env.OPENAI_API_KEY,
-    model: env.OPENAI_MODEL || 'gpt-4o-mini'
+    provider: 'gemini',
+    apiKey: env.GEMINI_API_KEY,
+    model: env.GEMINI_MODEL || 'gemini-2.5-flash'
   };
 }
 
@@ -111,8 +125,6 @@ export default {
       });
     }
 
-    // This Worker is an API backend; static website files are hosted on GitHub Pages.
-    // Avoid env.ASSETS.fetch when no assets binding exists (which caused the TypeError in the screenshot).
     if (url.pathname !== '/api/health' && url.pathname !== '/api/health/check') {
       if (env.ASSETS && typeof env.ASSETS.fetch === 'function') return env.ASSETS.fetch(request);
       return jsonResponse({ error: 'Not found. Open the GitHub Pages website for the site UI.' }, 404, responseOrigin);
@@ -126,7 +138,7 @@ export default {
 
     if (request.method !== 'POST') return jsonResponse({ error: 'Method not allowed' }, 405, responseOrigin);
     if (!ai.apiKey) {
-      return jsonResponse({ error: `مفتاح ${ai.provider === 'gemini' ? 'Gemini' : 'OpenAI'} غير مضبوط في إعدادات Worker.` }, 503, responseOrigin);
+      return jsonResponse({ error: 'مفتاح Gemini غير مضبوط كـ Secret باسم GEMINI_API_KEY في إعدادات Worker النشطة.' }, 503, responseOrigin);
     }
 
     let body;
