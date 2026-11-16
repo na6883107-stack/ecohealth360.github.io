@@ -26,7 +26,7 @@ function getAiConfig(env) {
     return {
       provider: 'gemini',
       apiKey: env.GEMINI_API_KEY,
-      model: env.GEMINI_MODEL || 'gemini-2.0-flash'
+      model: env.GEMINI_MODEL || 'gemini-3.8-flash'
     };
   }
 
@@ -54,7 +54,8 @@ async function callGemini(question, model, apiKey) {
   });
 
   if (!upstream.ok) {
-    throw new Error('Gemini request failed');
+    const text = await upstream.text().catch(() => '');
+    throw new Error(`Gemini request failed: ${text}`);
   }
 
   const result = await upstream.json();
@@ -89,7 +90,8 @@ async function callOpenAI(question, model, apiKey) {
   });
 
   if (!upstream.ok) {
-    throw new Error('OpenAI request failed');
+    const text = await upstream.text().catch(() => '');
+    throw new Error(`OpenAI request failed: ${text}`);
   }
 
   const result = await upstream.json();
@@ -133,7 +135,7 @@ export default {
 
     const ai = getAiConfig(env);
     if (!ai.apiKey) {
-      return jsonResponse({ error: 'Assistant service is not configured' }, 503, responseOrigin);
+      return jsonResponse({ error: 'Assistant service is not configured. Add GEMINI_API_KEY or OPENAI_API_KEY in Cloudflare Worker secrets.' }, 503, responseOrigin);
     }
 
     let body;
@@ -157,7 +159,8 @@ export default {
         : await callOpenAI(question, ai.model, ai.apiKey);
 
       return jsonResponse({ answer }, 200, responseOrigin);
-    } catch {
+    } catch (error) {
+      console.error('Assistant error:', error);
       return jsonResponse({ error: 'Assistant service is temporarily unavailable' }, 502, responseOrigin);
     }
   }
